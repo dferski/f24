@@ -1,0 +1,9 @@
+.bottomMenuContainer {
+    display: flex;
+    justify-content: space-between;  /* Zmieniono na space-between */
+    align-items: center;             /* Dodano dla wyrównania elementów */
+    width: 100%;                     /* Zapewnia, że menu rozciąga się na całą szerokość */
+    padding: 10px 20px;              /* Dostosowano padding */
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Dostosowano cień dla lepszego efektu */
+}

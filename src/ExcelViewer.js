@@ -1,35 +1,18 @@
 import React, { useState } from 'react';
-import * as XLSX from 'xlsx';
 import { Table } from 'semantic-ui-react';
 import styles from './ExcelViewer.module.css';
 import TopMenu from './TopMenu';
+import BottomMenu from './BottomMenu';
+import { handleFileUpload } from './fileHandlers';  // Import funkcji
 
 function ExcelViewer() {
   const [fileData, setFileData] = useState([]);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const wb = XLSX.read(event.target.result, { type: 'binary' });
-      const sheetName = wb.SheetNames[0];
-      const sheet = wb.Sheets[sheetName];
-      const data = XLSX.utils.sheet_to_json(sheet, { raw: false });
-
-      // Zamienia kropki na przecinki w kolumnie "Cena"
-      const updatedData = data.map(row => ({
-        ...row,
-        'Kurs euro z NBP': '', // Pusta wartość dla nowej kolumny
-        'Zysk w PLN': '' // Pusta wartość dla nowej kolumny
-      }));
-      setFileData(updatedData);
-    };
-    reader.readAsBinaryString(file);
-  };
+  const [euroRate, setEuroRate] = useState(null); // Stan dla kursu euro
 
   return (
     <div className={styles.mainContainer}>
-      <TopMenu onFileInput={handleFileUpload} fileLoaded={fileData.length > 0} />
+      <TopMenu onFileInput={(e) => handleFileUpload(e, setFileData, setEuroRate)} fileLoaded={fileData.length > 0} />
+      <BottomMenu euroRate={euroRate} />  
       <div className={styles.contentContainer}>
         {fileData.length > 0 && (
           <div className={styles.tableContainer}>

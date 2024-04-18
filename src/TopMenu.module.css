@@ -1,0 +1,20 @@
+.menuContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px; /* Odstępy wewnętrzne dla lepszego wyglądu */
+    background-color: #f4f4f4; /* Tło menu */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtelny cień dla lepszego efektu wizualnego */
+  }
+  
+  .menuLeft {
+    font-size: 20px; /* Większa czcionka dla lepszej widoczności */
+    font-weight: bold;
+  }
+  
+  .menuRight {
+    display: flex;
+    gap: 20px; /* Odstęp między przyciskami */
+  }
+  

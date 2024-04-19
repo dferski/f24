@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import styles from './TopMenu.module.css';
 
-function TopMenu({ onFileInput, fileLoaded }) {
+function TopMenu({ onFileInput, onFetchRates, fileLoaded }) {
   return (
     <div className={styles.menuContainer}>
       <div className={styles.menuLeft}>
@@ -20,7 +20,7 @@ function TopMenu({ onFileInput, fileLoaded }) {
           accept=".xls,.xlsx"
         />
         {fileLoaded && (
-          <Button>Dodatkowa opcja</Button>
+          <Button onClick={onFetchRates}>Pobierz kurs NBP</Button>
         )}
       </div>
     </div>

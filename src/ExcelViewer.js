@@ -3,16 +3,22 @@ import { Table } from 'semantic-ui-react';
 import styles from './ExcelViewer.module.css';
 import TopMenu from './TopMenu';
 import BottomMenu from './BottomMenu';
-import { handleFileUpload } from './fileHandlers';  // Import funkcji
+import { handleFileUpload } from './fileHandlers';
 
 function ExcelViewer() {
   const [fileData, setFileData] = useState([]);
-  const [euroRate, setEuroRate] = useState(null); // Stan dla kursu euro
+
+
+  const onFileInput = async (event) => {
+    await handleFileUpload(event, setFileData); // Tylko setFileData jest przekazywane
+  };
+
+
 
   return (
     <div className={styles.mainContainer}>
-      <TopMenu onFileInput={(e) => handleFileUpload(e, setFileData, setEuroRate)} fileLoaded={fileData.length > 0} />
-      <BottomMenu euroRate={euroRate} />  
+   <TopMenu onFileInput={onFileInput} fileLoaded={fileData.length > 0} />
+      <BottomMenu />
       <div className={styles.contentContainer}>
         {fileData.length > 0 && (
           <div className={styles.tableContainer}>

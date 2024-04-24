@@ -1,23 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table } from 'semantic-ui-react';
-import styles from './ExcelViewer.module.css';
 import TopMenu from './TopMenu';
 import BottomMenu from './BottomMenu';
-import { handleFileUpload } from './fileHandlers';
+import { handleFileUpload, fetchYearlyEuroRates, updateEuroRates } from './fileHandlers';
+import styles from './ExcelViewer.module.css';
 
 function ExcelViewer() {
   const [fileData, setFileData] = useState([]);
+  const [euroRates, setEuroRates] = useState({});  // Dodajemy stan dla kursów euro
+  const [ratesLoaded, setRatesLoaded] = useState(false);
 
+  useEffect(() => {
+    const loadRates = async () => {
+      const rates = await fetchYearlyEuroRates();
+      setEuroRates(rates);  // Aktualizujemy stan euroRates
+      setRatesLoaded(true);
+      console.log("Euro rates loaded:", rates); // Log załadowanych kursów euro
+    };
+    loadRates();
+  }, []);
 
   const onFileInput = async (event) => {
-    await handleFileUpload(event, setFileData); // Tylko setFileData jest przekazywane
+    await handleFileUpload(event, setFileData);
+    console.log("Data loaded from file:", fileData); // Log danych wczytanych z pliku
   };
 
-
+  const onFetchRates = async () => {
+    console.log("Fetching rates with data:", fileData);
+    if (!euroRates || Object.keys(euroRates).length === 0) {
+      console.error("Euro rates data is not loaded yet.");
+      return;
+    }
+    await updateEuroRates(fileData, setFileData, euroRates);
+  };
+  
+  
 
   return (
     <div className={styles.mainContainer}>
-   <TopMenu onFileInput={onFileInput} fileLoaded={fileData.length > 0} />
+      <TopMenu onFileInput={onFileInput} onFetchRates={onFetchRates} fileLoaded={fileData.length > 0} />
       <BottomMenu />
       <div className={styles.contentContainer}>
         {fileData.length > 0 && (
